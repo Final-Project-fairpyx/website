@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fair Allocation Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Fair Allocation Algorithms Demo</h1>
+    <form method="POST" action="/">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.students.label }}<br>
+            {{ form.students(size=32) }}
+        </p>
+        <p>
+            {{ form.courses.label }}<br>
+            {{ form.courses(size=32) }}
+        </p>
+        <p>
+            {{ form.generate_random_students.label }}<br>
+            {{ form.generate_random_students() }}
+        </p>
+        <p>
+            {{ form.generate_random_courses.label }}<br>
+            {{ form.generate_random_courses() }}
+        </p>
+        <p>
+            {{ form.generate_random_bids.label }}<br>
+            {{ form.generate_random_bids() }}
+        </p>
+        <p>
+            {{ form.algorithm.label }}<br>
+            {{ form.algorithm() }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
+</html>
