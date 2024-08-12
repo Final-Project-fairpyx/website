@@ -1,0 +1,31 @@
+# Ignore Python virtual environments
+venv/
+
+# Ignore JetBrains IDEs (e.g., PyCharm) project files
+.idea/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Other files you might want to ignore
+*.log
+*.sqlite3
