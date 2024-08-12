@@ -25,6 +25,17 @@
             </tr>
             {% endfor %}
         </table>
+
+        <h2>Select Algorithm</h2>
+        <select name="algorithm" required>
+            <option value="TTC">TTC</option>
+            <option value="SP">SP</option>
+            <option value="TTC-O">TTC-O</option>
+            <option value="SP-O">SP-O</option>
+            <option value="OC">OC</option>
+        </select>
+        <br><br>
+
         <button type="button" class="random-button" onclick="randomizeBids()">Random Bids</button>
         <button type="submit">Submit</button>
     </form>
