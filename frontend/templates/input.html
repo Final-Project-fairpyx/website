@@ -11,6 +11,7 @@
     <form action="" method="post">
         <h2>Students</h2>
         <button type="button" class="random-button" onclick="randomizeStudents()">Random Students</button>
+        <button type="button" class="random-button" onclick="randomizeStudentCourses()">Random Courses per Student</button>
         <br>
         {% for i in range(num_students) %}
             <label for="student_name_{{i}}">Student {{i+1}} Name:</label>
@@ -22,6 +23,7 @@
 
         <h2>Courses</h2>
         <button type="button" class="random-button" onclick="randomizeCourses()">Random Courses</button>
+        <button type="button" class="random-button" onclick="randomizeCoursePlaces()">Random Places per Course</button>
         <br>
         {% for i in range(num_courses) %}
             <label for="course_name_{{i}}">Course {{i+1}} Name:</label>
@@ -31,6 +33,7 @@
             <br>
         {% endfor %}
         <br>
+        <button type="button" class="random-button" onclick="randomizeAll()">Random All</button>
         <button type="submit">Next</button>
     </form>
 
@@ -45,6 +48,27 @@
             {% for i in range(num_courses) %}
                 document.getElementById('course_name_{{i}}').value = 'C{{i+1}}';
             {% endfor %}
+        }
+
+        function randomizeStudentCourses() {
+            {% for i in range(num_students) %}
+                // Random number of courses between 1 and the total number of courses
+                document.getElementById('student_courses_{{i}}').value = Math.floor(Math.random() * {{ num_courses }}) + 1;
+            {% endfor %}
+        }
+
+        function randomizeCoursePlaces() {
+            {% for i in range(num_courses) %}
+                // Random number of places between 1 and a chosen maximum (e.g., 10)
+                document.getElementById('course_places_{{i}}').value = Math.floor(Math.random() * 10) + 1;
+            {% endfor %}
+        }
+
+        function randomizeAll() {
+            randomizeStudents();
+            randomizeCourses();
+            randomizeStudentCourses();
+            randomizeCoursePlaces();
         }
     </script>
 </body>
