@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-# from fairpyx_integration import run_algorithm
 
 app = Flask(__name__)
 
@@ -18,6 +17,7 @@ def input_details(num_students, num_courses):
     if request.method == 'POST':
         students = []
         courses = []
+
         for i in range(num_students):
             student_name = request.form[f'student_name_{i}']
             num_courses_student = int(request.form[f'student_courses_{i}'])
@@ -28,7 +28,8 @@ def input_details(num_students, num_courses):
             course_places = int(request.form[f'course_places_{i}'])
             courses.append({'name': course_name, 'places': course_places})
 
-        return redirect(url_for('bids', num_students=num_students, num_courses=num_courses, students=students, courses=courses))
+        # Directly render the bids.html template, passing the students and courses data
+        return render_template('bids.html', students=students, courses=courses)
 
     return render_template('input.html', num_students=num_students, num_courses=num_courses)
 
@@ -39,6 +40,7 @@ def bids():
         bids = []
         students = request.form.getlist('students')
         courses = request.form.getlist('courses')
+
         for student in students:
             student_bids = {}
             for course in courses:
@@ -50,8 +52,10 @@ def bids():
         results = None  # Call your fairpyx algorithm here
         return render_template('results.html', results=results)
 
+    # If GET request, expect the students and courses to be passed from the previous step
     students = request.args.getlist('students')
     courses = request.args.getlist('courses')
+
     return render_template('bids.html', students=students, courses=courses)
 
 # Route to display results

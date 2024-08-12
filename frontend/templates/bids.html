@@ -13,14 +13,14 @@
             <tr>
                 <th>Students bids:</th>
                 {% for course in courses %}
-                <th>{{ course }}</th>
+                <th>{{ course.name }}</th>
                 {% endfor %}
             </tr>
             {% for student in students %}
             <tr>
-                <td>{{ student }}</td>
+                <td>{{ student.name }}</td>
                 {% for course in courses %}
-                <td><input type="number" id="bid_{{ student }}_{{ course }}" name="bid_{{ student }}_{{ course }}" min="0" max="1000" required></td>
+                <td><input type="number" id="bid_{{ student.name }}_{{ course.name }}" name="bid_{{ student.name }}_{{ course.name }}" min="0" max="1000" required></td>
                 {% endfor %}
             </tr>
             {% endfor %}
@@ -31,16 +31,22 @@
 
     <script>
         function randomizeBids() {
-            {% for student in students %}
-                let totalBid = 1000;
-                let numCourses = {{ courses | length }};
-                let bids = [];
+            let totalBid;
+            let numCourses;
+            let bids = [];
+            let bid;
+            let bidValue;
 
-                console.log('Randomizing bids for {{ student }}');
+            {% for student in students %}
+                totalBid = 1000;
+                numCourses = {{ courses | length }};
+                bids = [];
+
+                console.log('Randomizing bids for {{ student.name }}');
 
                 // Generate random bids for the courses
                 for (let i = 0; i < numCourses - 1; i++) {
-                    let bid = Math.floor(Math.random() * (totalBid - (numCourses - i - 1)));
+                    bid = Math.floor(Math.random() * (totalBid - (numCourses - i - 1)));
                     bids.push(bid);
                     totalBid -= bid;
                 }
@@ -56,9 +62,9 @@
 
                 // Assign bids to the inputs
                 {% for course in courses %}
-                    let bidValue = bids.pop();
-                    console.log('Assigning bid for {{ student }} in {{ course }}:', bidValue);
-                    document.getElementById('bid_{{ student }}_{{ course }}').value = bidValue;
+                    bidValue = bids.pop();
+                    console.log('Assigning bid for {{ student.name }} in {{ course.name }}:', bidValue);
+                    document.getElementById('bid_{{ student.name }}_{{ course.name }}').value = bidValue;
                 {% endfor %}
             {% endfor %}
         }
