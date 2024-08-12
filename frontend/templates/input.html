@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fair Allocation - Input Details</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Input Details</h1>
     <form action="" method="post">
         <h2>Students</h2>
+        <button type="button" class="random-button" onclick="randomizeStudents()">Random Students</button>
+        <br>
         {% for i in range(num_students) %}
             <label for="student_name_{{i}}">Student {{i+1}} Name:</label>
             <input type="text" id="student_name_{{i}}" name="student_name_{{i}}" required>
@@ -18,6 +21,8 @@
         {% endfor %}
 
         <h2>Courses</h2>
+        <button type="button" class="random-button" onclick="randomizeCourses()">Random Courses</button>
+        <br>
         {% for i in range(num_courses) %}
             <label for="course_name_{{i}}">Course {{i+1}} Name:</label>
             <input type="text" id="course_name_{{i}}" name="course_name_{{i}}" required>
@@ -28,5 +33,19 @@
         <br>
         <button type="submit">Next</button>
     </form>
+
+    <script>
+        function randomizeStudents() {
+            {% for i in range(num_students) %}
+                document.getElementById('student_name_{{i}}').value = 'S{{i+1}}';
+            {% endfor %}
+        }
+
+        function randomizeCourses() {
+            {% for i in range(num_courses) %}
+                document.getElementById('course_name_{{i}}').value = 'C{{i+1}}';
+            {% endfor %}
+        }
+    </script>
 </body>
 </html>
