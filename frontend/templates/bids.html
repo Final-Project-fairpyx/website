@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Allocation - Bids</title>
+</head>
+<body>
+    <h1>Enter Bids</h1>
+    <form action="" method="post">
+        {% for student in students %}
+            <h2>{{ student }}</h2>
+            {% for course in courses %}
+                <label for="bid_{{ student }}_{{ course }}">{{ course }}:</label>
+                <input type="number" id="bid_{{ student }}_{{ course }}" name="bid_{{ student }}_{{ course }}" min="0" max="1000" required>
+                <br>
+            {% endfor %}
+        {% endfor %}
+
+        <h2>Select Algorithm</h2>
+        <select name="algorithm" required>
+            <option value="TTC">TTC</option>
+            <option value="SP">SP</option>
+            <option value="TTC-O">TTC-O</option>
+            <option value="SP-O">SP-O</option>
+            <option value="OC">OC</option>
+        </select>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

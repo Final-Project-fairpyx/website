@@ -2,11 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Allocation Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Allocation - Results</title>
 </head>
 <body>
-    <h1>Allocation Result</h1>
-    <pre>{{ result }}</pre>
-    <a href="{{ url_for('index') }}">Try Again</a>
+    <h1>Allocation Results</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result['student'] }}</td>
+                <td>{{ result['course'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

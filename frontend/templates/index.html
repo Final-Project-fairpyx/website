@@ -2,38 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Fair Allocation Demo</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Allocation - Home</title>
 </head>
 <body>
-    <h1>Fair Allocation Algorithms Demo</h1>
-    <form method="POST" action="/">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.students.label }}<br>
-            {{ form.students(size=32) }}
-        </p>
-        <p>
-            {{ form.courses.label }}<br>
-            {{ form.courses(size=32) }}
-        </p>
-        <p>
-            {{ form.generate_random_students.label }}<br>
-            {{ form.generate_random_students() }}
-        </p>
-        <p>
-            {{ form.generate_random_courses.label }}<br>
-            {{ form.generate_random_courses() }}
-        </p>
-        <p>
-            {{ form.generate_random_bids.label }}<br>
-            {{ form.generate_random_bids() }}
-        </p>
-        <p>
-            {{ form.algorithm.label }}<br>
-            {{ form.algorithm() }}
-        </p>
-        <p>{{ form.submit() }}</p>
+    <h1>Fair Allocation Demo</h1>
+    <form action="/" method="post">
+        <label for="num_students">Number of students:</label>
+        <input type="number" id="num_students" name="num_students" min="1" required>
+        <br>
+        <label for="num_courses">Number of courses:</label>
+        <input type="number" id="num_courses" name="num_courses" min="1" required>
+        <br><br>
+        <button type="submit">Next</button>
     </form>
 </body>
 </html>
