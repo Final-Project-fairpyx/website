@@ -1,2 +1,6 @@
-.venv/
+# Ignore Python virtual environments
 venv/
+.venv/
+
+# Ignore JetBrains IDEs (e.g., PyCharm) project files
+.idea/
