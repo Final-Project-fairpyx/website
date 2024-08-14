@@ -58,9 +58,10 @@
         }
 
         function randomizeCoursePlaces() {
+            var totalStudents = {{ num_students }};
             {% for i in range(num_courses) %}
-                // Random number of places between 1 and a chosen maximum (e.g., 10)
-                document.getElementById('course_places_{{i}}').value = Math.floor(Math.random() * 10) + 1;
+                // Random number of places between 1 and totalStudents
+                document.getElementById('course_places_{{i}}').value = Math.floor(Math.random() * totalStudents) + 1;
             {% endfor %}
         }
 
