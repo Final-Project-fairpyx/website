@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fair Allocation - Results</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .more-info {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleInfo(studentId) {
+            var x = document.getElementById(studentId);
+            var button = document.getElementById("button-" + studentId);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                button.textContent = "Less Info";
+            } else {
+                x.style.display = "none";
+                button.textContent = "More Info";
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Allocation Results</h1>
@@ -13,13 +32,18 @@
             <tr>
                 <th>Student</th>
                 <th>Allocated Courses</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for student, courses in results.items() %}
+            {% for student, info in results.items() %}
             <tr>
                 <td>{{ student }}</td>
-                <td>{{ ', '.join(courses) }}</td>
+                <td>{{ ', '.join(info['courses']) }}</td>
+                <td><button id="button-info-{{ student }}" onclick="toggleInfo('info-{{ student }}')">More Info</button></td>
+            </tr>
+            <tr id="info-{{ student }}" class="more-info">
+                <td colspan="3"><pre>{{ info['details'] }}</pre></td>
             </tr>
             {% endfor %}
         </tbody>

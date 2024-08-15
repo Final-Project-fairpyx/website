@@ -27,7 +27,7 @@
         </table>
 
         <h2>Select Algorithm</h2>
-        <select name="algorithm" required>
+        <select name="algorithm" id="algorithm-select" required onchange="checkAlgorithm()">
             <option value="TTC">TTC</option>
             <option value="SP">SP</option>
             <option value="TTC-O">TTC-O</option>
@@ -36,11 +36,36 @@
         </select>
         <br><br>
 
+        <!-- Additional select box for cp options, initially hidden -->
+        <div id="cp-options" style="display: none;">
+            <h3>Select CP Solver</h3>
+            <select name="cp_solver">
+                <option value="cp.CBC">cp.CBC</option>
+                <option value="cp.MOSEK">cp.MOSEK</option>
+                <option value="cp.SCIP">cp.SCIP</option>
+                <option value="cp.GLPK_MI">cp.GLPK_MI</option>
+                <option value="cp.SCIPY">cp.SCIPY</option>
+            </select>
+            <br><br>
+        </div>
+
         <button type="button" class="random-button" onclick="randomizeBids()">Random Bids</button>
         <button type="submit">Submit</button>
     </form>
 
     <script>
+        function checkAlgorithm() {
+            const algorithm = document.getElementById('algorithm-select').value;
+            const cpOptions = document.getElementById('cp-options');
+
+            // Show the cp-options select box only for "TTC-O", "SP-O", or "OC"
+            if (algorithm === 'TTC-O' || algorithm === 'SP-O' || algorithm === 'OC') {
+                cpOptions.style.display = 'block';
+            } else {
+                cpOptions.style.display = 'none';
+            }
+        }
+
         function randomizeBids() {
             let totalBid;
             let numCourses;

@@ -1,6 +1,8 @@
+import logging
 from flask import Flask, render_template, request, redirect, url_for, session
 import fairpyx
 import os
+from fairpyx.explanations import StringsExplanationLogger
 
 
 app = Flask(__name__)
@@ -62,6 +64,7 @@ def bids():
             bids.append({'student': student['name'], 'bids': student_bids})
 
         algo = request.form['algorithm']
+        solver = request.form['cp_solver']
 
         # Prepare data for the algorithm
         agent_capacities = {student['name']: student['num_courses'] for student in students}
@@ -75,6 +78,8 @@ def bids():
         app.logger.debug(item_capacities)
         app.logger.debug("valuations:")
         app.logger.debug(valuations)
+        app.logger.debug("num of students:")
+        app.logger.debug(len(students))
 
         # Create instance
         instance = fairpyx.Instance(
@@ -83,17 +88,21 @@ def bids():
             valuations=valuations
         )
 
+        string_explanation_logger = StringsExplanationLogger([student['name'] for student in students], level=logging.INFO)
+
+
+
         # Call the fairpyx algorithm
         if algo == 'TTC':
-            results = fairpyx.divide(fairpyx.algorithms.TTC_function, instance=instance)
+            results = fairpyx.divide(fairpyx.algorithms.TTC_function, instance=instance, explanation_logger=string_explanation_logger)
         elif algo == 'SP':
-            results = fairpyx.divide(fairpyx.algorithms.SP_function, instance=instance)
+            results = fairpyx.divide(fairpyx.algorithms.SP_function, instance=instance, explanation_logger=string_explanation_logger)
         elif algo == 'TTC-O':
-            results = fairpyx.divide(fairpyx.algorithms.TTC_O_function, instance=instance)
+            results = fairpyx.divide(fairpyx.algorithms.TTC_O_function, instance=instance, solver=solver, explanation_logger=string_explanation_logger)
         elif algo == 'SP-O':
-            results = fairpyx.divide(fairpyx.algorithms.SP_O_function, instance=instance)
+            results = fairpyx.divide(fairpyx.algorithms.SP_O_function, instance=instance, solver=solver, explanation_logger=string_explanation_logger)
         elif algo == 'OC':
-            results = fairpyx.divide(fairpyx.algorithms.OC_function, instance=instance)
+            results = fairpyx.divide(fairpyx.algorithms.OC_function, instance=instance, solver=solver, explanation_logger=string_explanation_logger)
         # Add other algorithm cases here if needed
         else:
             results = "Algorithm not recognized."
@@ -101,8 +110,36 @@ def bids():
         # Use logging to print results
         app.logger.debug("Algorithm Results:")
         app.logger.debug(results)
+        app.logger.debug("Debug Results:")
+        app.logger.debug(string_explanation_logger.map_agent_to_explanation())
 
-        return render_template('result.html', results=results)
+        # Parse the explanation logger's output into a more structured format
+        courses = session.get('courses', [])
+        course_mapping = {course['name'] for course in courses}  # Assuming course names are unique and used as identifiers
+
+        # Parse the explanation logger's output into a more structured format
+        parsed_results = {
+            student: {
+                "courses": [],
+                "details": ""
+            }
+            for student in string_explanation_logger.map_agent_to_explanation().keys()
+        }
+
+        for student, explanation in string_explanation_logger.map_agent_to_explanation().items():
+            allocated_courses = []
+            lines = explanation.splitlines()
+            for line in lines:
+                if "you get course" in line:
+                    course_code = line.split(" ")[-4]  # Extract the course identifier (e.g., C1, C2)
+                    # course_name = course_mapping.get(course_code, course_code)  # Get course name from the mapping
+                    allocated_courses.append(course_code)  # Append course name instead of code
+            parsed_results[student]["courses"] = allocated_courses
+            parsed_results[student]["details"] = explanation
+
+        # Pass the parsed results to the result page
+        return render_template("result.html", results=parsed_results)
+
     students = session.get('students', [])
     courses = session.get('courses', [])
 
@@ -116,4 +153,4 @@ def results():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5005,debug=True)
