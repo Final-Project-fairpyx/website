@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fair Allocation - Results</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Allocation Results</h1>
@@ -11,14 +12,14 @@
         <thead>
             <tr>
                 <th>Student</th>
-                <th>Course</th>
+                <th>Allocated Courses</th>
             </tr>
         </thead>
         <tbody>
-            {% for result in results %}
+            {% for student, courses in results.items() %}
             <tr>
-                <td>{{ result['student'] }}</td>
-                <td>{{ result['course'] }}</td>
+                <td>{{ student }}</td>
+                <td>{{ ', '.join(courses) }}</td>
             </tr>
             {% endfor %}
         </tbody>

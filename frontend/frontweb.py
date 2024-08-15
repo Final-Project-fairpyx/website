@@ -88,6 +88,12 @@ def bids():
             results = fairpyx.divide(fairpyx.algorithms.TTC_function, instance=instance)
         elif algo == 'SP':
             results = fairpyx.divide(fairpyx.algorithms.SP_function, instance=instance)
+        elif algo == 'TTC-O':
+            results = fairpyx.divide(fairpyx.algorithms.TTC_O_function, instance=instance)
+        elif algo == 'SP-O':
+            results = fairpyx.divide(fairpyx.algorithms.SP_O_function, instance=instance)
+        elif algo == 'OC':
+            results = fairpyx.divide(fairpyx.algorithms.OC_function, instance=instance)
         # Add other algorithm cases here if needed
         else:
             results = "Algorithm not recognized."
@@ -96,7 +102,7 @@ def bids():
         app.logger.debug("Algorithm Results:")
         app.logger.debug(results)
 
-        return render_template('results.html', results=results)
+        return render_template('result.html', results=results)
     students = session.get('students', [])
     courses = session.get('courses', [])
 
