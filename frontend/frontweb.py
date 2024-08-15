@@ -26,6 +26,7 @@ def input_details(num_students, num_courses):
         students = []
         courses = []
 
+
         # Extract student details
         for i in range(num_students):
             student_name = request.form[f'student_name_{i}']
@@ -142,8 +143,9 @@ def bids():
 
     students = session.get('students', [])
     courses = session.get('courses', [])
+    num_courses = len(courses)  # Get the number of courses
 
-    return render_template('bids.html', students=students, courses=courses)
+    return render_template('bids.html', students=students, courses=courses, num_courses=num_courses)
 
 
 # Route to display results

@@ -7,6 +7,39 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+
+    <!-- Conflict Selection Table -->
+    <h2>Select Course Conflicts</h2>
+    <table border="1">
+        <tr>
+            <th></th> <!-- Empty top-left cell -->
+            {% for course in courses %}
+                <th>{{ course.name }}</th> <!-- Header row with course names -->
+            {% endfor %}
+        </tr>
+        {% for i in range(num_courses) %}
+        <tr>
+            <th>{{ courses[i].name }}</th> <!-- Header column with course names -->
+            {% for j in range(num_courses) %}
+                {% if i != j %}
+                <td>
+                    <input type="checkbox" id="conflict_{{i}}_{{j}}" name="conflict_{{i}}_{{j}}"
+                           onchange="updateConflict({{i}}, {{j}})">
+                </td>
+                {% else %}
+                <td></td> <!-- Empty cell for conflicts with itself -->
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Conflict List Display -->
+    <h3>Conflict List:</h3>
+    <ul id="conflict-list">
+        <!-- Conflict items will be dynamically added here -->
+    </ul>
+
     <h1>Enter Bids</h1>
     <form action="/bids" method="post">
         <table>
@@ -54,6 +87,56 @@
     </form>
 
     <script>
+        const conflicts = {};
+
+        function updateConflict(i, j) {
+            const checkboxIJ = document.getElementById(`conflict_${i}_${j}`);
+            const checkboxJI = document.getElementById(`conflict_${j}_${i}`);
+            const courseI = `C${i+1}`;
+            const courseJ = `C${j+1}`;
+
+            if (checkboxIJ.checked) {
+                checkboxJI.checked = true;
+                addConflict(courseI, courseJ);
+                addConflict(courseJ, courseI);
+            } else {
+                checkboxJI.checked = false;
+                removeConflict(courseI, courseJ);
+                removeConflict(courseJ, courseI);
+            }
+
+            updateConflictListDisplay();
+        }
+
+        function addConflict(course, conflict) {
+            if (!conflicts[course]) {
+                conflicts[course] = [];
+            }
+            if (!conflicts[course].includes(conflict)) {
+                conflicts[course].push(conflict);
+            }
+        }
+
+        function removeConflict(course, conflict) {
+            if (conflicts[course]) {
+                conflicts[course] = conflicts[course].filter(c => c !== conflict);
+                if (conflicts[course].length === 0) {
+                    delete conflicts[course];
+                }
+            }
+        }
+
+        function updateConflictListDisplay() {
+            const conflictList = document.getElementById('conflict-list');
+            conflictList.innerHTML = '';
+
+            for (const course in conflicts) {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${course}: ${conflicts[course].join(', ')}`;
+                conflictList.appendChild(listItem);
+            }
+        }
+
         function checkAlgorithm() {
             const algorithm = document.getElementById('algorithm-select').value;
             const cpOptions = document.getElementById('cp-options');
