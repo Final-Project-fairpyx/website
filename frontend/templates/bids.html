@@ -34,6 +34,9 @@
         {% endfor %}
     </table>
 
+    <!-- Randomize Conflicts Button -->
+    <button type="button" class="random-button" onclick="randomizeConflicts()">Randomize Conflicts</button>
+
     <!-- Conflict List Display -->
     <h3>Conflict List:</h3>
     <ul id="conflict-list">
@@ -135,6 +138,48 @@
                 listItem.textContent = `${course}: ${conflicts[course].join(', ')}`;
                 conflictList.appendChild(listItem);
             }
+        }
+
+        function randomizeConflicts() {
+            const numCourses = {{ num_courses }};
+            const minSelections = 1;
+            const maxSelections = Math.floor(numCourses / 2);  // Set maximum to half of the number of courses
+
+            // Randomly decide how many conflicts to select (between 1 and maxSelections)
+            const numSelections = Math.floor(Math.random() * (maxSelections - minSelections + 1)) + minSelections;
+
+            let selectedCount = 0;
+
+            // Reset all checkboxes
+            for (let i = 0; i < numCourses; i++) {
+            for (let j = 0; j < numCourses; j++) {
+                if (i !== j) {
+                    const checkboxIJ = document.getElementById(`conflict_${i}_${j}`);
+                    checkboxIJ.checked = false;
+                    updateConflict(i, j);
+                }
+            }
+            }
+
+            // Randomly select checkboxes up to numSelections
+            while (selectedCount < numSelections) {
+            const i = Math.floor(Math.random() * numCourses);
+            const j = Math.floor(Math.random() * numCourses);
+
+            if (i !== j) {
+                const checkboxIJ = document.getElementById(`conflict_${i}_${j}`);
+                const checkboxJI = document.getElementById(`conflict_${j}_${i}`);
+
+                if (!checkboxIJ.checked && !checkboxJI.checked) {
+                    checkboxIJ.checked = true;
+                    checkboxJI.checked = true;
+                    updateConflict(i, j);
+                    selectedCount++;
+                }
+            }
+            }
+
+            updateConflictListDisplay();
         }
 
         function checkAlgorithm() {
