@@ -170,8 +170,21 @@ def bids():
             parsed_results[student]["courses"] = allocated_courses
             parsed_results[student]["details"] = explanation
 
-        # Pass the parsed results to the result page
-        return render_template("result.html", results=parsed_results, solver_issue=solver_issue)
+        # Prepare input data for the result page
+        input_data = {
+            'num_students': len(students),
+            'num_courses': len(courses),
+            'students': [{'name': student['name'], 'num_courses': student['num_courses']} for student in students],
+            'courses': [{'name': course['name'], 'places': course['places']} for course in courses],
+            'bids': {student['name']: student_bids for student, student_bids in
+                     zip(students, [b['bids'] for b in bids])},
+            'algorithm': algo,
+            'solver': solver if not solver_issue else 'Not Used a Specific Solver'
+        }
+
+        # Pass the parsed results and input data to the result page
+        return render_template("result.html", results=parsed_results, solver_issue=solver_issue,
+                               input_data=input_data)
 
     students = session.get('students', [])
     courses = session.get('courses', [])
