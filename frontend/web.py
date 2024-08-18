@@ -82,6 +82,9 @@ def bids():
         item_conflicts = request.form.get('item_conflicts', '{}')
         item_conflicts = json.loads(item_conflicts)  # Convert JSON string to Python dict
 
+        app.logger.debug("Conflicts:")
+        app.logger.debug(item_conflicts)
+
         # Prepare data for the algorithm
         agent_capacities = {student['name']: student['num_courses'] for student in students}
         item_capacities = {course['name']: course['places'] for course in courses}

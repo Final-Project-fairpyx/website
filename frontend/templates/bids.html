@@ -13,93 +13,96 @@
     </header>
 
     <main>
-         <form action="/bids" method="post">
-        <!-- Conflict Selection Section -->
-        <section class="select-course-conflicts">
-            <h2>Select Course Conflicts</h2>
+        <form action="/bids" method="post">
+            <!-- Conflict Selection Section -->
+            <section class="select-course-conflicts">
+                <h2>Select Course Conflicts</h2>
+                <div class="table-container">
+                    <table border="1">
+                        <tr>
+                            <th></th> <!-- Empty top-left cell -->
+                            {% for course in courses %}
+                                <th>{{ course.name }}</th> <!-- Header row with course names -->
+                            {% endfor %}
+                        </tr>
+                        {% for i in range(num_courses) %}
+                        <tr>
+                            <th>{{ courses[i].name }}</th> <!-- Header column with course names -->
+                            {% for j in range(num_courses) %}
+                                {% if i != j %}
+                                <td>
+                                    <input type="checkbox" id="conflict_{{i}}_{{j}}" name="conflict_{{i}}_{{j}}"
+                                           onchange="updateConflict({{i}}, {{j}})">
+                                </td>
+                                {% else %}
+                                <td></td> <!-- Empty cell for conflicts with itself -->
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <!-- Randomize Conflicts Button -->
+                <button type="button" class="random-button" onclick="randomizeConflicts()">Randomize Conflicts</button>
+
+                <!-- Conflict List Display -->
+                <h3>Conflict List:</h3>
+                <ul id="conflict-list">
+                    <!-- Conflict items will be dynamically added here -->
+                </ul>
+            </section>
+
+            <!-- Hidden input to store the serialized conflicts -->
+            <input type="hidden" id="conflicts-input" name="item_conflicts">
+
+            <!-- Bids Section -->
+            <h1>Enter Bids</h1>
             <div class="table-container">
-                <table border="1">
+                <table class="bids-table">
                     <tr>
-                        <th></th> <!-- Empty top-left cell -->
+                        <th>Students bids:</th>
                         {% for course in courses %}
-                            <th>{{ course.name }}</th> <!-- Header row with course names -->
+                        <th>{{ course.name }}</th>
                         {% endfor %}
                     </tr>
-                    {% for i in range(num_courses) %}
+                    {% for student in students %}
                     <tr>
-                        <th>{{ courses[i].name }}</th> <!-- Header column with course names -->
-                        {% for j in range(num_courses) %}
-                            {% if i != j %}
-                            <td>
-                                <input type="checkbox" id="conflict_{{i}}_{{j}}" name="conflict_{{i}}_{{j}}"
-                                       onchange="updateConflict({{i}}, {{j}})">
-                            </td>
-                            {% else %}
-                            <td></td> <!-- Empty cell for conflicts with itself -->
-                            {% endif %}
+                        <td>{{ student.name }}</td>
+                        {% for course in courses %}
+                        <td><input type="number" id="bid_{{ student.name }}_{{ course.name }}" name="bid_{{ student.name }}_{{ course.name }}" min="0" max="1000" required></td>
                         {% endfor %}
                     </tr>
                     {% endfor %}
                 </table>
             </div>
 
-            <!-- Randomize Conflicts Button -->
-            <button type="button" class="random-button" onclick="randomizeConflicts()">Randomize Conflicts</button>
-
-            <!-- Conflict List Display -->
-            <h3>Conflict List:</h3>
-            <ul id="conflict-list">
-                <!-- Conflict items will be dynamically added here -->
-            </ul>
-        </section>
-
-        <!-- Bids Section -->
-        <h1>Enter Bids</h1>
-        <div class="table-container">
-            <table class="bids-table">
-                <tr>
-                    <th>Students bids:</th>
-                    {% for course in courses %}
-                    <th>{{ course.name }}</th>
-                    {% endfor %}
-                </tr>
-                {% for student in students %}
-                <tr>
-                    <td>{{ student.name }}</td>
-                    {% for course in courses %}
-                    <td><input type="number" id="bid_{{ student.name }}_{{ course.name }}" name="bid_{{ student.name }}_{{ course.name }}" min="0" max="1000" required></td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-
-        <h2>Select Algorithm</h2>
-        <select name="algorithm" id="algorithm-select" required onchange="checkAlgorithm()">
-            <option value="TTC">TTC</option>
-            <option value="SP">SP</option>
-            <option value="TTC-O">TTC-O</option>
-            <option value="SP-O">SP-O</option>
-            <option value="OC">OC</option>
-        </select>
-        <br><br>
-
-        <!-- Additional select box for cp options, initially hidden -->
-        <div id="cp-options" style="display: none;">
-            <h3>Select CP Solver</h3>
-            <select name="cp_solver">
-                <option value="cp.CBC">cp.CBC</option>
-                <option value="cp.MOSEK">cp.MOSEK</option>
-                <option value="cp.SCIP">cp.SCIP</option>
-                <option value="cp.GLPK_MI">cp.GLPK_MI</option>
-                <option value="cp.SCIPY">cp.SCIPY</option>
+            <h2>Select Algorithm</h2>
+            <select name="algorithm" id="algorithm-select" required onchange="checkAlgorithm()">
+                <option value="TTC">TTC</option>
+                <option value="SP">SP</option>
+                <option value="TTC-O">TTC-O</option>
+                <option value="SP-O">SP-O</option>
+                <option value="OC">OC</option>
             </select>
             <br><br>
-        </div>
 
-        <button type="button" class="random-button" onclick="randomizeBids()">Random Bids</button>
-        <button type="submit">Submit</button>
-    </form>
+            <!-- Additional select box for cp options, initially hidden -->
+            <div id="cp-options" style="display: none;">
+                <h3>Select CP Solver</h3>
+                <select name="cp_solver">
+                    <option value="cp.CBC">cp.CBC</option>
+                    <option value="cp.MOSEK">cp.MOSEK</option>
+                    <option value="cp.SCIP">cp.SCIP</option>
+                    <option value="cp.GLPK_MI">cp.GLPK_MI</option>
+                    <option value="cp.SCIPY">cp.SCIPY</option>
+                </select>
+                <br><br>
+            </div>
+
+            <button type="button" class="random-button" onclick="randomizeBids()">Random Bids</button>
+            <button type="submit">Submit</button>
+        </form>
     </main>
 
     <footer>
@@ -162,8 +165,6 @@
             // Serialize conflicts and set the hidden input value
             document.getElementById('conflicts-input').value = JSON.stringify(conflicts);
         }
-
-
 
         function randomizeConflicts() {
             const numCourses = {{ num_courses }};
