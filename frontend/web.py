@@ -1,3 +1,4 @@
+import json
 import logging
 from flask import Flask, render_template, request, redirect, url_for, session
 import fairpyx
@@ -77,11 +78,23 @@ def bids():
         algo = request.form['algorithm']
         solver = request.form['cp_solver']
 
+        # Deserialize the item conflicts from the form
+        item_conflicts = request.form.get('item_conflicts', '{}')
+        item_conflicts = json.loads(item_conflicts)  # Convert JSON string to Python dict
+
         # Prepare data for the algorithm
         agent_capacities = {student['name']: student['num_courses'] for student in students}
         item_capacities = {course['name']: course['places'] for course in courses}
         valuations = {student['name']: student_bids for student, student_bids in
                       zip(students, [b['bids'] for b in bids])}
+
+        # Create instance with item conflicts
+        instance = fairpyx.Instance(
+            agent_capacities=agent_capacities,
+            item_capacities=item_capacities,
+            valuations=valuations,
+            item_conflicts=item_conflicts  # Add the item conflicts to the instance
+        )
 
         app.logger.debug("agent_capacities:")
         app.logger.debug(agent_capacities)
@@ -93,13 +106,6 @@ def bids():
         app.logger.debug(len(students))
         app.logger.debug("solver:")
         app.logger.debug(solver)
-
-        # Create instance
-        instance = fairpyx.Instance(
-            agent_capacities=agent_capacities,
-            item_capacities=item_capacities,
-            valuations=valuations
-        )
 
         string_explanation_logger = StringsExplanationLogger([student['name'] for student in students], level=logging.INFO)
 

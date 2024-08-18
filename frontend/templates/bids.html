@@ -158,7 +158,12 @@
                 listItem.textContent = `${course}: ${conflicts[course].join(', ')}`;
                 conflictList.appendChild(listItem);
             }
+
+            // Serialize conflicts and set the hidden input value
+            document.getElementById('conflicts-input').value = JSON.stringify(conflicts);
         }
+
+
 
         function randomizeConflicts() {
             const numCourses = {{ num_courses }};
