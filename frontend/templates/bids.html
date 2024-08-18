@@ -17,29 +17,31 @@
         <!-- Conflict Selection Section -->
         <section class="select-course-conflicts">
             <h2>Select Course Conflicts</h2>
-            <table border="1">
-                <tr>
-                    <th></th> <!-- Empty top-left cell -->
-                    {% for course in courses %}
-                        <th>{{ course.name }}</th> <!-- Header row with course names -->
+            <div class="table-container">
+                <table border="1">
+                    <tr>
+                        <th></th> <!-- Empty top-left cell -->
+                        {% for course in courses %}
+                            <th>{{ course.name }}</th> <!-- Header row with course names -->
+                        {% endfor %}
+                    </tr>
+                    {% for i in range(num_courses) %}
+                    <tr>
+                        <th>{{ courses[i].name }}</th> <!-- Header column with course names -->
+                        {% for j in range(num_courses) %}
+                            {% if i != j %}
+                            <td>
+                                <input type="checkbox" id="conflict_{{i}}_{{j}}" name="conflict_{{i}}_{{j}}"
+                                       onchange="updateConflict({{i}}, {{j}})">
+                            </td>
+                            {% else %}
+                            <td></td> <!-- Empty cell for conflicts with itself -->
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-                {% for i in range(num_courses) %}
-                <tr>
-                    <th>{{ courses[i].name }}</th> <!-- Header column with course names -->
-                    {% for j in range(num_courses) %}
-                        {% if i != j %}
-                        <td>
-                            <input type="checkbox" id="conflict_{{i}}_{{j}}" name="conflict_{{i}}_{{j}}"
-                                   onchange="updateConflict({{i}}, {{j}})">
-                        </td>
-                        {% else %}
-                        <td></td> <!-- Empty cell for conflicts with itself -->
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
+                </table>
+            </div>
 
             <!-- Randomize Conflicts Button -->
             <button type="button" class="random-button" onclick="randomizeConflicts()">Randomize Conflicts</button>
@@ -53,7 +55,7 @@
 
         <!-- Bids Section -->
         <h1>Enter Bids</h1>
-<!--        <form action="/bids" method="post">-->
+        <div class="table-container">
             <table class="bids-table">
                 <tr>
                     <th>Students bids:</th>
@@ -70,33 +72,34 @@
                 </tr>
                 {% endfor %}
             </table>
+        </div>
 
-            <h2>Select Algorithm</h2>
-            <select name="algorithm" id="algorithm-select" required onchange="checkAlgorithm()">
-                <option value="TTC">TTC</option>
-                <option value="SP">SP</option>
-                <option value="TTC-O">TTC-O</option>
-                <option value="SP-O">SP-O</option>
-                <option value="OC">OC</option>
+        <h2>Select Algorithm</h2>
+        <select name="algorithm" id="algorithm-select" required onchange="checkAlgorithm()">
+            <option value="TTC">TTC</option>
+            <option value="SP">SP</option>
+            <option value="TTC-O">TTC-O</option>
+            <option value="SP-O">SP-O</option>
+            <option value="OC">OC</option>
+        </select>
+        <br><br>
+
+        <!-- Additional select box for cp options, initially hidden -->
+        <div id="cp-options" style="display: none;">
+            <h3>Select CP Solver</h3>
+            <select name="cp_solver">
+                <option value="cp.CBC">cp.CBC</option>
+                <option value="cp.MOSEK">cp.MOSEK</option>
+                <option value="cp.SCIP">cp.SCIP</option>
+                <option value="cp.GLPK_MI">cp.GLPK_MI</option>
+                <option value="cp.SCIPY">cp.SCIPY</option>
             </select>
             <br><br>
+        </div>
 
-            <!-- Additional select box for cp options, initially hidden -->
-            <div id="cp-options" style="display: none;">
-                <h3>Select CP Solver</h3>
-                <select name="cp_solver">
-                    <option value="cp.CBC">cp.CBC</option>
-                    <option value="cp.MOSEK">cp.MOSEK</option>
-                    <option value="cp.SCIP">cp.SCIP</option>
-                    <option value="cp.GLPK_MI">cp.GLPK_MI</option>
-                    <option value="cp.SCIPY">cp.SCIPY</option>
-                </select>
-                <br><br>
-            </div>
-
-            <button type="button" class="random-button" onclick="randomizeBids()">Random Bids</button>
-            <button type="submit">Submit</button>
-        </form>
+        <button type="button" class="random-button" onclick="randomizeBids()">Random Bids</button>
+        <button type="submit">Submit</button>
+    </form>
     </main>
 
     <footer>

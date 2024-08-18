@@ -164,8 +164,10 @@ def bids():
             lines = explanation.splitlines()
             for line in lines:
                 if "you get course" in line:
-                    course_code = line.split(" ")[-4]  # Extract the course identifier (e.g., C1, C2)
-                    # course_name = course_mapping.get(course_code, course_code)  # Get course name from the mapping
+                    if algo == "SP":
+                        course_code = line.split(" ")[3]
+                    else:
+                        course_code = line.split(" ")[-4]  # Extract the course identifier (e.g., C1, C2)
                     allocated_courses.append(course_code)  # Append course name instead of code
             parsed_results[student]["courses"] = allocated_courses
             parsed_results[student]["details"] = explanation

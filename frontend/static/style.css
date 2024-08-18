@@ -1,5 +1,4 @@
-/* static/style.css */
-
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f8ff; /* Light blue background */
@@ -37,13 +36,13 @@ header a.home-icon:hover {
 
 footer {
     text-align: center;
-    padding: 10px; /* Reduced padding */
+    padding: 10px;
     background-color: #87ceeb; /* Light sky blue footer */
     color: #fff;
     position: fixed;
     bottom: 0;
     width: 100%;
-    font-size: 14px; /* Reduced font size */
+    font-size: 14px;
 }
 
 main {
@@ -69,7 +68,7 @@ form {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form{
+.form {
     max-width: 1000px;
     margin: 40px auto;
     padding: 20px;
@@ -137,7 +136,7 @@ button:hover {
     border-radius: 4px;
 }
 
-/* Styles specific to input.html */
+/* Specific Styles for input.html */
 .input-details-form .form-table {
     width: 100%;
     border-collapse: collapse;
@@ -166,7 +165,7 @@ button:hover {
     width: 80%; /* Ensures inputs fill their container */
 }
 
-/* Styles specific to bids.html */
+/* Specific Styles for bids.html */
 .bids-table {
     width: 100%;
     border-collapse: collapse;
@@ -182,7 +181,26 @@ button:hover {
     text-align: center;
 }
 
-/* Styles specific to results.html */
+.table-container {
+    max-width: 100%;
+    overflow-x: auto; /* Add horizontal scroll if needed */
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.bids-table, .select-course-conflicts table {
+    min-width: 800px; /* Set a minimum width to ensure scrollability */
+}
+
+.bids-table th, .bids-table td,
+.select-course-conflicts table th,
+.select-course-conflicts table td {
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Specific Styles for results.html */
 .more-info {
     display: none;
     margin-top: 10px;
