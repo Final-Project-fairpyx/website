@@ -91,6 +91,8 @@ def bids():
         app.logger.debug(valuations)
         app.logger.debug("num of students:")
         app.logger.debug(len(students))
+        app.logger.debug("solver:")
+        app.logger.debug(solver)
 
         # Create instance
         instance = fairpyx.Instance(
@@ -134,8 +136,19 @@ def bids():
             # Handle any other exceptions, including solver-specific issues
             app.logger.error(f"An unexpected error occurred: {e}. Attempting to run without a specific solver.")
             try:
-                results = fairpyx.divide(call_algo, instance=instance, explanation_logger=string_explanation_logger)
                 solver_issue = True  # Set the flag to True if a fallback occurs
+                app.logger.debug("ENTER TO TRY")
+                app.logger.debug("solver:")
+                app.logger.debug(solver)
+                string_explanation_logger = StringsExplanationLogger([student['name'] for student in students],
+                                                                     level=logging.INFO)
+                if solver == 'cp.MOSEK':
+                    results = fairpyx.divide(call_algo, instance=instance, explanation_logger=string_explanation_logger,
+                                             solver=cp.CBC)
+                    solver = 'cp.CBC'
+                else:
+                    results = fairpyx.divide(call_algo, instance=instance, explanation_logger=string_explanation_logger, solver=None)
+
             except Exception as e:
                 app.logger.error(f"An unexpected error occurred: {e}")
                 results = f"An unexpected error occurred: {e}"
