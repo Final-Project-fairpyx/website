@@ -3,11 +3,19 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import fairpyx
 import os
 from fairpyx.explanations import StringsExplanationLogger
+import cvxpy as cp
 
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Set a secret key for session management
 
+solver_mapping = {
+    'cp.CBC': cp.CBC,
+    'cp.MOSEK': cp.MOSEK,
+    'cp.SCIP': cp.SCIP,
+    'cp.GLPK_MI': cp.GLPK_MI,
+    'cp.SCIPY': cp.SCIPY,
+}
 
 # Home route to choose the number of students and courses
 @app.route('/', methods=['GET', 'POST'])
@@ -99,12 +107,11 @@ def bids():
         elif algo == 'SP':
             results = fairpyx.divide(fairpyx.algorithms.SP_function, instance=instance, explanation_logger=string_explanation_logger)
         elif algo == 'TTC-O':
-            results = fairpyx.divide(fairpyx.algorithms.TTC_O_function, instance=instance, solver=solver, explanation_logger=string_explanation_logger)
+            results = fairpyx.divide(fairpyx.algorithms.TTC_O_function, instance=instance, solver=solver_mapping.get(solver), explanation_logger=string_explanation_logger)
         elif algo == 'SP-O':
-            results = fairpyx.divide(fairpyx.algorithms.SP_O_function, instance=instance, solver=solver, explanation_logger=string_explanation_logger)
+            results = fairpyx.divide(fairpyx.algorithms.SP_O_function, instance=instance, solver=solver_mapping.get(solver), explanation_logger=string_explanation_logger)
         elif algo == 'OC':
-            results = fairpyx.divide(fairpyx.algorithms.OC_function, instance=instance, solver=solver, explanation_logger=string_explanation_logger)
-        # Add other algorithm cases here if needed
+            results = fairpyx.divide(fairpyx.algorithms.OC_function, instance=instance, solver=solver_mapping.get(solver), explanation_logger=string_explanation_logger)
         else:
             results = "Algorithm not recognized."
 
