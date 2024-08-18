@@ -5,6 +5,7 @@ import os
 from fairpyx.explanations import StringsExplanationLogger
 import cvxpy as cp
 
+global call_algo
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Set a secret key for session management
@@ -60,6 +61,7 @@ def input_details(num_students, num_courses):
 @app.route('/bids', methods=['GET', 'POST'])
 def bids():
 
+    global call_algo
     if request.method == 'POST':
         bids = []
         students = session.get('students', [])
@@ -99,23 +101,46 @@ def bids():
 
         string_explanation_logger = StringsExplanationLogger([student['name'] for student in students], level=logging.INFO)
 
-
-
+        solver_issue = False  # Initialize the flag
         # Call the fairpyx algorithm
-        if algo == 'TTC':
-            results = fairpyx.divide(fairpyx.algorithms.TTC_function, instance=instance, explanation_logger=string_explanation_logger)
-        elif algo == 'SP':
-            results = fairpyx.divide(fairpyx.algorithms.SP_function, instance=instance, explanation_logger=string_explanation_logger)
-        elif algo == 'TTC-O':
-            results = fairpyx.divide(fairpyx.algorithms.TTC_O_function, instance=instance, solver=solver_mapping.get(solver), explanation_logger=string_explanation_logger)
-        elif algo == 'SP-O':
-            results = fairpyx.divide(fairpyx.algorithms.SP_O_function, instance=instance, solver=solver_mapping.get(solver), explanation_logger=string_explanation_logger)
-        elif algo == 'OC':
-            results = fairpyx.divide(fairpyx.algorithms.OC_function, instance=instance, solver=solver_mapping.get(solver), explanation_logger=string_explanation_logger)
-        else:
-            results = "Algorithm not recognized."
+        try:
+            if algo == 'TTC':
+                call_algo = fairpyx.algorithms.TTC_function
+                results = fairpyx.divide(call_algo, instance=instance,
+                                         explanation_logger=string_explanation_logger)
+            elif algo == 'SP':
+                call_algo = fairpyx.algorithms.SP_function
+                results = fairpyx.divide(call_algo, instance=instance,
+                                         explanation_logger=string_explanation_logger)
+            elif algo == 'TTC-O':
+                call_algo = fairpyx.algorithms.TTC_O_function
+                # Attempt to use the selected solver
+                solver = solver_mapping[solver]  # This will raise a KeyError if the solver is not found
+                results = fairpyx.divide(call_algo, instance=instance, solver=solver,
+                                         explanation_logger=string_explanation_logger)
+            elif algo == 'SP-O':
+                call_algo = fairpyx.algorithms.SP_O_function
+                solver = solver_mapping[solver]
+                results = fairpyx.divide(call_algo, instance=instance, solver=solver,
+                                         explanation_logger=string_explanation_logger)
+            elif algo == 'OC':
+                call_algo = fairpyx.algorithms.OC_function
+                solver = solver_mapping[solver]
+                results = fairpyx.divide(call_algo, instance=instance, solver=solver,
+                                         explanation_logger=string_explanation_logger)
+            else:
+                results = "Algorithm not recognized."
+        except Exception as e:
+            # Handle any other exceptions, including solver-specific issues
+            app.logger.error(f"An unexpected error occurred: {e}. Attempting to run without a specific solver.")
+            try:
+                results = fairpyx.divide(call_algo, instance=instance, explanation_logger=string_explanation_logger)
+                solver_issue = True  # Set the flag to True if a fallback occurs
+            except Exception as e:
+                app.logger.error(f"An unexpected error occurred: {e}")
+                results = f"An unexpected error occurred: {e}"
 
-        # Use logging to print results
+        # Continue with processing the results
         app.logger.debug("Algorithm Results:")
         app.logger.debug(results)
         app.logger.debug("Debug Results:")
@@ -146,7 +171,7 @@ def bids():
             parsed_results[student]["details"] = explanation
 
         # Pass the parsed results to the result page
-        return render_template("result.html", results=parsed_results)
+        return render_template("result.html", results=parsed_results, solver_issue=solver_issue)
 
     students = session.get('students', [])
     courses = session.get('courses', [])

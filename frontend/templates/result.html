@@ -27,6 +27,13 @@
 </head>
 <body>
     <h1>Allocation Results</h1>
+
+    {% if solver_issue %}
+    <div style="color: red;">
+        An issue occurred with the solver. The algorithm was run without a specific solver.
+    </div>
+    {% endif %}
+
     <table>
         <thead>
             <tr>
