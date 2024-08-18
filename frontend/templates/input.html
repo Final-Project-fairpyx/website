@@ -4,38 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fair Allocation - Input Details</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Input Details</h1>
-    <form action="" method="post">
-        <h2>Students</h2>
-        <button type="button" class="random-button" onclick="randomizeStudents()">Random Students</button>
-        <button type="button" class="random-button" onclick="randomizeStudentCourses()">Random Courses per Student</button>
-        <br>
-        {% for i in range(num_students) %}
-            <label for="student_name_{{i}}">Student {{i+1}} Name:</label>
-            <input type="text" id="student_name_{{i}}" name="student_name_{{i}}" required>
-            <label for="student_courses_{{i}}">How many courses:</label>
-            <input type="number" id="student_courses_{{i}}" name="student_courses_{{i}}" min="1" required>
-            <br>
-        {% endfor %}
+    <header>
+        <a href="/" class="home-icon">🏠</a>
+        <h1>Fair Allocation Demo</h1>
+    </header>
+    <main>
+        <h1>Input Details</h1>
+        <form class="input-details-form" action="" method="post">
+            <h2>Students</h2>
+            <button type="button" class="random-button" onclick="randomizeStudents()">Random Students</button>
+            <button type="button" class="random-button" onclick="randomizeStudentCourses()">Random Courses per Student</button>
+            <br><br>
 
-        <h2>Courses</h2>
-        <button type="button" class="random-button" onclick="randomizeCourses()">Random Courses</button>
-        <button type="button" class="random-button" onclick="randomizeCoursePlaces()">Random Places per Course</button>
-        <br>
-        {% for i in range(num_courses) %}
-            <label for="course_name_{{i}}">Course {{i+1}} Name:</label>
-            <input type="text" id="course_name_{{i}}" name="course_name_{{i}}" required>
-            <label for="course_places_{{i}}">How many places:</label>
-            <input type="number" id="course_places_{{i}}" name="course_places_{{i}}" min="1" required>
+            <!-- Students Table -->
+            <div class="form-table">
+                <div class="form-row">
+                    <div class="form-cell header">Student Name</div>
+                    <div class="form-cell header">How Many Courses</div>
+                </div>
+                {% for i in range(num_students) %}
+                <div class="form-row">
+                    <div class="form-cell">
+                        <input type="text" id="student_name_{{i}}" name="student_name_{{i}}" required>
+                    </div>
+                    <div class="form-cell">
+                        <input type="number" id="student_courses_{{i}}" name="student_courses_{{i}}" min="1" required>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <h2>Courses</h2>
+            <button type="button" class="random-button" onclick="randomizeCourses()">Random Courses</button>
+            <button type="button" class="random-button" onclick="randomizeCoursePlaces()">Random Places per Course</button>
+            <br><br>
+
+            <!-- Courses Table -->
+            <div class="form-table">
+                <div class="form-row">
+                    <div class="form-cell header">Course Name</div>
+                    <div class="form-cell header">How Many Places</div>
+                </div>
+                {% for i in range(num_courses) %}
+                <div class="form-row">
+                    <div class="form-cell">
+                        <input type="text" id="course_name_{{i}}" name="course_name_{{i}}" required>
+                    </div>
+                    <div class="form-cell">
+                        <input type="number" id="course_places_{{i}}" name="course_places_{{i}}" min="1" required>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
             <br>
-        {% endfor %}
-        <br>
-        <button type="button" class="random-button" onclick="randomizeAll()">Random All</button>
-        <button type="submit">Next</button>
-    </form>
+            <button type="button" class="random-button" onclick="randomizeAll()">Random All</button>
+            <button type="submit">Next</button>
+        </form>
+    </main>
+    <footer>
+        <p>Programmers: Your Name Here</p>
+    </footer>
 
     <script>
         function randomizeStudents() {
@@ -52,7 +84,6 @@
 
         function randomizeStudentCourses() {
             {% for i in range(num_students) %}
-                // Random number of courses between 1 and the total number of courses
                 document.getElementById('student_courses_{{i}}').value = Math.floor(Math.random() * {{ num_courses }}) + 1;
             {% endfor %}
         }
@@ -60,7 +91,6 @@
         function randomizeCoursePlaces() {
             var totalStudents = {{ num_students }};
             {% for i in range(num_courses) %}
-                // Random number of places between 1 and totalStudents
                 document.getElementById('course_places_{{i}}').value = Math.floor(Math.random() * totalStudents) + 1;
             {% endfor %}
         }

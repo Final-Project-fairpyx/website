@@ -1,56 +1,208 @@
-/* static/styles.css */
+/* static/style.css */
 
 body {
     font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #87ceeb; /* Light sky blue header */
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; /* Ensure header is positioned for absolute elements */
+}
+
+header h1 {
+    margin: 0;
+    color: #fff;
+}
+
+header a.home-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 28px;
+    vertical-align: middle;
+}
+
+header a.home-icon:hover {
+    color: #ddd;
+}
+
+footer {
+    text-align: center;
+    padding: 10px; /* Reduced padding */
+    background-color: #87ceeb; /* Light sky blue footer */
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px; /* Reduced font size */
+}
+
+main {
     padding: 20px;
+    margin-top: 70px; /* Adjust this value based on the header height */
+    margin-bottom: 50px; /* Adjust this value based on the footer height */
 }
 
 h1, h2 {
     color: #004f6e;
 }
 
-table {
-    width: 50%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-table, th, td {
-    border: 1px solid #004f6e;
-}
-
-th, td {
-    padding: 10px;
+h1 {
     text-align: center;
 }
 
-th {
-    background-color: #004f6e;
-    color: white;
+form {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form{
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: inline-block;
+    width: 200px; /* Adjust width as needed */
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 input[type="text"], input[type="number"], select {
-    padding: 5px;
+    padding: 10px;
     margin: 5px 0;
-    width: 100px;
+    width: calc(100% - 22px);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+input[type="number"] {
+    width: auto; /* Adjust width to fit inline with label */
+    margin-right: 10px; /* Space between label and input */
 }
 
 button {
-    background-color: #004f6e;
-    color: white;
+    background-color: #87ceeb; /* Light sky blue */
     border: none;
-    padding: 10px 20px;
+    color: white;
+    padding: 12px 24px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
+    margin: 10px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #007c9a;
+    background-color: #4682b4; /* Slightly darker blue */
 }
 
-.random-button {
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 200px; /* Adjust width as needed */
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.form-group input {
+    flex: 1;
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Styles specific to input.html */
+.input-details-form .form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.input-details-form .form-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.input-details-form .form-cell {
+    padding: 10px;
+    border: 1px solid #ddd;
+    flex: 1;
+}
+
+.input-details-form .form-cell.header {
+    font-weight: bold;
+    background-color: #f5f5f5;
+}
+
+.input-details-form input[type="text"],
+.input-details-form input[type="number"] {
+    width: 80%; /* Ensures inputs fill their container */
+}
+
+/* Styles specific to bids.html */
+.bids-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bids-table th, .bids-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.bids-table th {
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+/* Styles specific to results.html */
+.more-info {
+    display: none;
+    margin-top: 10px;
+}
+
+.input-data {
     margin-top: 20px;
+}
+
+.input-data table {
+    width: 100%; /* Adjusted width to fit within the container */
+    border-collapse: collapse;
+}
+
+.input-data th, .input-data td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+.input-data th {
+    background-color: #f2f2f2;
 }

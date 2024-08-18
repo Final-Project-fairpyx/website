@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fair Allocation - Results</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <style>
         .more-info {
             display: none;
@@ -14,7 +14,7 @@
             margin-top: 20px;
         }
         .input-data table {
-            width: 30%;
+            width: 100%; /* Adjusted width to fit within the container */
             border-collapse: collapse;
         }
         .input-data th, .input-data td {
@@ -24,6 +24,32 @@
         }
         .input-data th {
             background-color: #f2f2f2;
+        }
+        header {
+            background-color: #87ceeb; /* Light sky blue header */
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+            color: #fff;
+        }
+        footer {
+            background-color: #87ceeb; /* Light sky blue footer */
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+        }
+        main {
+            padding: 20px;
+            margin-top: 70px; /* Adjust this value based on the header height */
+            margin-bottom: 50px; /* Adjust this value based on the footer height */
         }
     </style>
     <script>
@@ -53,111 +79,123 @@
     </script>
 </head>
 <body>
-    <h1>Allocation Results</h1>
+    <header>
+        <a href="/" class="home-icon">🏠</a>
+        <h1>Fair Allocation System</h1>
+    </header>
 
-    {% if solver_issue %}
-    <div style="color: red;">
-        An issue occurred with the solver. The algorithm was run without a specific solver.
-    </div>
-    {% endif %}
+    <main>
+        <h1>Allocation Results</h1>
+        <div class="form">
+        {% if solver_issue %}
+        <div style="color: red;">
+            An issue occurred with the solver. The algorithm was run without a specific solver.
+        </div>
+        {% endif %}
 
-    <button id="input-data-button" onclick="toggleInputData()">Show Input Data</button>
-    <div id="input-data" class="input-data" style="display: none;">
-        <h2>Input Data</h2>
-        <h3>Algorithm Used: {{ input_data.algorithm }}</h3>
-        <h3>Solver Used: {{ input_data.solver }}</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Number of Students</th>
-                    <th>Number of Courses</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ input_data.num_students }}</td>
-                    <td>{{ input_data.num_courses }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <h3>Students</h3>
+        <button id="input-data-button" onclick="toggleInputData()">Show Input Data</button>
+        <div id="input-data" class="input-data" style="display: none;">
+            <h2>Input Data</h2>
+            <h3>Algorithm Used: {{ input_data.algorithm }}</h3>
+            <h3>Solver Used: {{ input_data.solver }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Number of Students</th>
+                        <th>Number of Courses</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ input_data.num_students }}</td>
+                        <td>{{ input_data.num_courses }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Students</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Courses Wanted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in input_data.students %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.num_courses }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3>Courses</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Places</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in input_data.courses %}
+                    <tr>
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.places }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3>Bids</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        {% for course in input_data.courses %}
+                        <th>{{ course.name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in input_data.students %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        {% for course in input_data.courses %}
+                        <td>{{ input_data.bids[student.name][course.name] }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Results</h2>
         <table>
             <thead>
                 <tr>
                     <th>Student</th>
-                    <th>Courses Wanted</th>
+                    <th>Allocated Courses</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% for student in input_data.students %}
+                {% for student, info in results.items() %}
                 <tr>
-                    <td>{{ student.name }}</td>
-                    <td>{{ student.num_courses }}</td>
+                    <td>{{ student }}</td>
+                    <td>{{ ', '.join(info['courses']) }}</td>
+                    <td><button id="button-info-{{ student }}" onclick="toggleInfo('info-{{ student }}')">More Info</button></td>
+                </tr>
+                <tr id="info-{{ student }}" class="more-info">
+                    <td colspan="3"><pre>{{ info['details'] }}</pre></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <h3>Courses</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Course</th>
-                    <th>Places</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for course in input_data.courses %}
-                <tr>
-                    <td>{{ course.name }}</td>
-                    <td>{{ course.places }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <h3>Bids</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    {% for course in input_data.courses %}
-                    <th>{{ course.name }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for student in input_data.students %}
-                <tr>
-                    <td>{{ student.name }}</td>
-                    {% for course in input_data.courses %}
-                    <td>{{ input_data.bids[student.name][course.name] }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            </div>
+    </main>
 
-    <h2>Results</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Student</th>
-                <th>Allocated Courses</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for student, info in results.items() %}
-            <tr>
-                <td>{{ student }}</td>
-                <td>{{ ', '.join(info['courses']) }}</td>
-                <td><button id="button-info-{{ student }}" onclick="toggleInfo('info-{{ student }}')">More Info</button></td>
-            </tr>
-            <tr id="info-{{ student }}" class="more-info">
-                <td colspan="3"><pre>{{ info['details'] }}</pre></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <footer>
+        <p>&copy; 2024 Fair Allocation System. All rights reserved.</p>
+    </footer>
 </body>
 </html>
