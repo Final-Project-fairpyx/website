@@ -60,7 +60,7 @@ h1 {
 }
 
 form {
-    max-width: 1000px;
+    max-width: 1500px;
     margin: 40px auto;
     padding: 20px;
     border-radius: 10px;
@@ -165,39 +165,84 @@ button:hover {
     width: 80%; /* Ensures inputs fill their container */
 }
 
-/* Specific Styles for bids.html */
-.bids-table {
+/* Specific Styles for bids.html and select-course-conflicts tables */
+.bids-table, .select-course-conflicts table {
     width: 100%;
     border-collapse: collapse;
+    position: relative;
 }
 
-.bids-table th, .bids-table td {
+.bids-table th, .bids-table td,
+.select-course-conflicts table th, .select-course-conflicts table td {
     padding: 10px;
     border: 1px solid #ddd;
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
-.bids-table th {
+.bids-table th, .select-course-conflicts table th {
     background-color: #f5f5f5;
     text-align: center;
 }
 
+.bids-table th:first-child, .bids-table td:first-child,
+.select-course-conflicts table th:first-child, .select-course-conflicts table td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f5f5f5; /* Ensure it matches the table header background */
+    z-index: 2;
+}
+
+.bids-table th, .select-course-conflicts table th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
 .table-container {
     max-width: 100%;
-    overflow-x: auto; /* Add horizontal scroll if needed */
+    max-height: 400px; /* Set a maximum height for vertical scrolling */
+    overflow-x: auto; /* Horizontal scrollbar */
+    overflow-y: auto; /* Vertical scrollbar */
     margin-bottom: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 10px;
 }
 
-.bids-table, .select-course-conflicts table {
-    min-width: 800px; /* Set a minimum width to ensure scrollability */
+/* Scrollable Tables for input.html */
+.scrollable-table {
+    max-height: 300px; /* Adjust this height based on your design needs */
+    overflow-y: auto; /* Vertical scrollbar */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
-.bids-table th, .bids-table td,
-.select-course-conflicts table th,
-.select-course-conflicts table td {
-    white-space: nowrap; /* Prevent text wrapping */
+.scrollable-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.scrollable-table th, .scrollable-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    background-color: #fff;
+}
+
+.scrollable-table th {
+    background-color: #f5f5f5;
+    position: sticky; /* Sticky header */
+    top: 0;
+    z-index: 2;
+}
+
+.scrollable-table th:first-child, .scrollable-table td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f5f5f5; /* Ensure it matches the table header background */
+    z-index: 2;
 }
 
 /* Specific Styles for results.html */

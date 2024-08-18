@@ -19,22 +19,24 @@
             <button type="button" class="random-button" onclick="randomizeStudentCourses()">Random Courses per Student</button>
             <br><br>
 
-            <!-- Students Table -->
-            <div class="form-table">
-                <div class="form-row">
-                    <div class="form-cell header">Student Name</div>
-                    <div class="form-cell header">How Many Courses</div>
-                </div>
-                {% for i in range(num_students) %}
-                <div class="form-row">
-                    <div class="form-cell">
-                        <input type="text" id="student_name_{{i}}" name="student_name_{{i}}" required>
+            <!-- Students Table with Scroll -->
+            <div class="scrollable-table">
+                <div class="form-table">
+                    <div class="form-row">
+                        <div class="form-cell header">Student Name</div>
+                        <div class="form-cell header">How Many Courses</div>
                     </div>
-                    <div class="form-cell">
-                        <input type="number" id="student_courses_{{i}}" name="student_courses_{{i}}" min="1" required>
+                    {% for i in range(num_students) %}
+                    <div class="form-row">
+                        <div class="form-cell">
+                            <input type="text" id="student_name_{{i}}" name="student_name_{{i}}" required>
+                        </div>
+                        <div class="form-cell">
+                            <input type="number" id="student_courses_{{i}}" name="student_courses_{{i}}" min="1" required>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
 
             <h2>Courses</h2>
@@ -42,22 +44,24 @@
             <button type="button" class="random-button" onclick="randomizeCoursePlaces()">Random Places per Course</button>
             <br><br>
 
-            <!-- Courses Table -->
-            <div class="form-table">
-                <div class="form-row">
-                    <div class="form-cell header">Course Name</div>
-                    <div class="form-cell header">How Many Places</div>
-                </div>
-                {% for i in range(num_courses) %}
-                <div class="form-row">
-                    <div class="form-cell">
-                        <input type="text" id="course_name_{{i}}" name="course_name_{{i}}" required>
+            <!-- Courses Table with Scroll -->
+            <div class="scrollable-table">
+                <div class="form-table">
+                    <div class="form-row">
+                        <div class="form-cell header">Course Name</div>
+                        <div class="form-cell header">How Many Places</div>
                     </div>
-                    <div class="form-cell">
-                        <input type="number" id="course_places_{{i}}" name="course_places_{{i}}" min="1" required>
+                    {% for i in range(num_courses) %}
+                    <div class="form-row">
+                        <div class="form-cell">
+                            <input type="text" id="course_name_{{i}}" name="course_name_{{i}}" required>
+                        </div>
+                        <div class="form-cell">
+                            <input type="number" id="course_places_{{i}}" name="course_places_{{i}}" min="1" required>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
 
             <br>

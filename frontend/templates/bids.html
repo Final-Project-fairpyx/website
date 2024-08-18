@@ -112,8 +112,11 @@
         function updateConflict(i, j) {
             const checkboxIJ = document.getElementById(`conflict_${i}_${j}`);
             const checkboxJI = document.getElementById(`conflict_${j}_${i}`);
-            const courseI = `C${i+1}`;
-            const courseJ = `C${j+1}`;
+
+            // Get the course names using their indices
+            const courseNames = {{ courses|tojson }};
+            const courseI = courseNames[i].name;
+            const courseJ = courseNames[j].name;
 
             if (checkboxIJ.checked) {
                 checkboxJI.checked = true;

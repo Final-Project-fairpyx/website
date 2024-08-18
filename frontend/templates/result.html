@@ -6,50 +6,30 @@
     <title>Fair Allocation - Results</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        .more-info {
-            display: none;
-            margin-top: 10px;
-        }
-        .input-data {
-            margin-top: 20px;
-        }
-        .input-data table {
-            width: 100%; /* Adjusted width to fit within the container */
-            border-collapse: collapse;
-        }
-        .input-data th, .input-data td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
-        .input-data th {
-            background-color: #f2f2f2;
-        }
-        header {
-            background-color: #87ceeb; /* Light sky blue header */
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        header h1 {
-            margin: 0;
-            color: #fff;
-        }
-        footer {
-            background-color: #87ceeb; /* Light sky blue footer */
-            color: #fff;
-            text-align: center;
+        /* Scrollable container for the results table */
+        .results-table-container {
+            max-height: 400px; /* Adjust this height based on your design needs */
+            max-width: 100%;
+            overflow-x: auto; /* Horizontal scrollbar */
+            overflow-y: auto; /* Vertical scrollbar */
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            font-size: 14px;
         }
-        main {
-            padding: 20px;
-            margin-top: 70px; /* Adjust this value based on the header height */
-            margin-bottom: 50px; /* Adjust this value based on the footer height */
+
+        .results-table th, .results-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .results-table th {
+            background-color: #f5f5f5;
+            position: sticky;
+            top: 0;
+            z-index: 2;
         }
     </style>
     <script>
@@ -170,28 +150,30 @@
         </div>
 
         <h2>Results</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    <th>Allocated Courses</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student, info in results.items() %}
-                <tr>
-                    <td>{{ student }}</td>
-                    <td>{{ ', '.join(info['courses']) }}</td>
-                    <td><button id="button-info-{{ student }}" onclick="toggleInfo('info-{{ student }}')">More Info</button></td>
-                </tr>
-                <tr id="info-{{ student }}" class="more-info">
-                    <td colspan="3"><pre>{{ info['details'] }}</pre></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-            </div>
+        <div class="results-table-container">
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Allocated Courses</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student, info in results.items() %}
+                    <tr>
+                        <td>{{ student }}</td>
+                        <td>{{ ', '.join(info['courses']) }}</td>
+                        <td><button id="button-info-{{ student }}" onclick="toggleInfo('info-{{ student }}')">More Info</button></td>
+                    </tr>
+                    <tr id="info-{{ student }}" class="more-info">
+                        <td colspan="3"><pre>{{ info['details'] }}</pre></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
     </main>
 
     <footer>
