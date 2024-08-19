@@ -177,6 +177,11 @@
 
         function randomizeConflicts() {
             const numCourses = {{ num_courses }};
+
+            if (numCourses <= 1) {
+                alert('With only one course, conflicts cannot be set.');
+                return; // Exit the function if there's only one course
+            }
             const minSelections = 1;
             const maxSelections = Math.floor(numCourses / 2);  // Set maximum to half of the number of courses
 
