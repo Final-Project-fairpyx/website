@@ -34,7 +34,7 @@
 <body>
     <header>
         <a href="/" class="home-icon">🏠</a>
-        <h1>Fair Allocation System</h1>
+        <h1>Fair Allocation Demo</h1>
     </header>
 
     <main>
@@ -51,6 +51,7 @@
             <h2>Input Data</h2>
             <h3>Algorithm Used: {{ input_data.algorithm }}</h3>
             <h3>Solver Used: {{ input_data.solver }}</h3>
+
             <table>
                 <thead>
                     <tr>
@@ -65,6 +66,28 @@
                     </tr>
                 </tbody>
             </table>
+            <h3>Conflicts</h3>
+            {% if input_data.conflicts %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Conflicts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for conflict in input_data.conflicts %}
+                        <tr>
+                            <td>{{ conflict.course }}</td>
+                            <td>{{ conflict.conflict }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No conflicts found.</p>
+            {% endif %}
+            <br>
             <h3>Students</h3>
             <table>
                 <thead>

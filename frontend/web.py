@@ -80,7 +80,16 @@ def bids():
 
         # Deserialize the item conflicts from the form
         item_conflicts = request.form.get('item_conflicts', '{}')
-        item_conflicts = json.loads(item_conflicts)  # Convert JSON string to Python dict
+        app.logger.debug("item_conflicts: ")
+        app.logger.debug(item_conflicts)
+        if item_conflicts:
+            try:
+                item_conflicts = json.loads(item_conflicts)  # Convert JSON string to Python dict
+            except json.JSONDecodeError as e:
+                app.logger.error(f"Failed to decode JSON: {e}")
+                item_conflicts = {}  # Default to an empty dictionary if JSON decoding fails
+        else:
+            item_conflicts = {}  # Default to an empty dictionary if item_conflicts is None or empty
 
         app.logger.debug("Conflicts:")
         app.logger.debug(item_conflicts)
@@ -91,13 +100,22 @@ def bids():
         valuations = {student['name']: student_bids for student, student_bids in
                       zip(students, [b['bids'] for b in bids])}
 
-        # Create instance with item conflicts
-        instance = fairpyx.Instance(
-            agent_capacities=agent_capacities,
-            item_capacities=item_capacities,
-            valuations=valuations,
-            item_conflicts=item_conflicts  # Add the item conflicts to the instance
-        )
+        if item_conflicts != {}:
+            app.logger.debug("instance with Conflicts")
+            # Create instance with item conflicts
+            instance = fairpyx.Instance(
+                agent_capacities=agent_capacities,
+                item_capacities=item_capacities,
+                valuations=valuations,
+                item_conflicts=item_conflicts  # Add the item conflicts to the instance
+            )
+        else:
+            app.logger.debug("-instance without Conflicts")
+            instance = fairpyx.Instance(
+                agent_capacities=agent_capacities,
+                item_capacities=item_capacities,
+                valuations=valuations
+            )
 
         app.logger.debug("agent_capacities:")
         app.logger.debug(agent_capacities)
@@ -194,6 +212,18 @@ def bids():
             parsed_results[student]["courses"] = allocated_courses
             parsed_results[student]["details"] = explanation
 
+        # Consolidate conflicts
+        consolidated_conflicts = {}
+        for course, conflict_list in item_conflicts.items():
+            if course not in consolidated_conflicts:
+                consolidated_conflicts[course] = set(conflict_list)  # Use a set to avoid duplicates
+            else:
+                consolidated_conflicts[course].update(conflict_list)
+
+        # Convert to a list of dictionaries for easier rendering
+        formatted_conflicts = [{'course': course, 'conflict': ', '.join(sorted(conflicts))} for course, conflicts in
+                               consolidated_conflicts.items()]
+
         # Prepare input data for the result page
         input_data = {
             'num_students': len(students),
@@ -203,7 +233,8 @@ def bids():
             'bids': {student['name']: student_bids for student, student_bids in
                      zip(students, [b['bids'] for b in bids])},
             'algorithm': algo,
-            'solver': solver if not solver_issue else 'Not Used a Specific Solver'
+            'solver': solver if not solver_issue else 'Not Used a Specific Solver',
+            'conflicts': formatted_conflicts if formatted_conflicts else []
         }
 
         # Pass the parsed results and input data to the result page
