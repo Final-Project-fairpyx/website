@@ -7,15 +7,12 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <script>
         function toggleInfo(studentId) {
-            var x = document.getElementById(studentId);
-            var button = document.getElementById("button-" + studentId);
-            if (x.style.display === "none") {
-                x.style.display = "block";
-                button.textContent = "Less Info";
-            } else {
-                x.style.display = "none";
-                button.textContent = "More Info";
-            }
+            var popup = document.getElementById('popup-' + studentId);
+            popup.style.display = popup.style.display === 'none' || popup.style.display === '' ? 'block' : 'none';
+        }
+
+        function closePopup(studentId) {
+            document.getElementById('popup-' + studentId).style.display = 'none';
         }
 
         function toggleInputData() {
@@ -30,6 +27,53 @@
             }
         }
     </script>
+    <style>
+        /* Popup Container */
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1000; /* Ensures popup is above other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%; /* Full viewport height */
+            overflow: auto; /* Allows scrolling */
+            background-color: rgba(0, 0, 0, 0.6); /* Slightly darker background */
+            padding-top: 60px; /* Space for close button */
+        }
+
+        /* Popup Content */
+        .popup-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* Centering popup with more space at top and bottom */
+            margin-top: 1px;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px; /* Adjusted width */
+            max-height: 70vh; /* Maximum height to fit within viewport */
+            overflow: auto; /* Scroll within popup if needed */
+            position: relative;
+            font-size: 16px;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -160,11 +204,15 @@
                     <tr>
                         <td>{{ student }}</td>
                         <td>{{ ', '.join(info['courses']) }}</td>
-                        <td><button id="button-info-{{ student }}" onclick="toggleInfo('info-{{ student }}')">More Info</button></td>
+                        <td><button onclick="toggleInfo('{{ student }}')">More Info</button></td>
                     </tr>
-                    <tr id="info-{{ student }}" class="more-info">
-                        <td colspan="3"><pre>{{ info['details'] }}</pre></td>
-                    </tr>
+                    <div id="popup-{{ student }}" class="popup">
+                        <div class="popup-content">
+                            <span class="close-btn" onclick="closePopup('{{ student }}')">&times;</span>
+                            <h2>Details for {{ student }}</h2>
+                            <p><pre>{{ info['details'] }}</pre></p>
+                        </div>
+                    </div>
                     {% endfor %}
                 </tbody>
             </table>
