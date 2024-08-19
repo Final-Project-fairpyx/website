@@ -283,6 +283,13 @@ button:hover {
     background-color: #f2f2f2;
 }
 
+/* Ensure the results table takes up full width */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensure table layout respects the width settings */
+}
+
 /* Scrollable container for the results table */
 .results-table-container {
     max-height: 1000px; /* Adjust this height based on your design needs */
@@ -300,6 +307,16 @@ button:hover {
     border: 1px solid #ddd;
     text-align: left;
     white-space: nowrap; /* Prevent text wrapping */
+    word-break: break-word; /* Break long words if necessary */
+}
+
+.results-table td {
+    word-wrap: break-word; /* Allows long words to break and wrap within the cell */
+    white-space: normal; /* Allows text to wrap onto the next line */
+}
+
+.results-table td {
+    max-width: 200px; /* Adjust the maximum width as needed */
 }
 
 .results-table th {
@@ -307,6 +324,13 @@ button:hover {
     position: sticky;
     top: 0;
     z-index: 2;
+}
+
+/* Allocate more space to the 'Allocated Courses' column */
+.results-table td:nth-child(2) {
+    max-width: 1000px; /* Set a maximum width for the 'Allocated Courses' column */
+    overflow-wrap: break-word; /* Break long words to fit the cell */
+    word-break: break-word; /* Ensure long words break */
 }
 
 /* Popup Container */
@@ -423,4 +447,24 @@ button:hover {
     z-index: 3; /* Ensures header stays on top */
 }
 
+.results-table th:nth-child(1), /* Adjust width for the first column */
+.results-table td:nth-child(1) {
+    width: 200px; /* Set width for the first column */
+}
+
+.results-table th:nth-child(2), /* Adjust width for the 'Allocated Courses' column */
+.results-table td:nth-child(2) {
+    width: 600px; /* Set width for the 'Allocated Courses' column */
+}
+
+.results-table th:nth-child(3), /* Adjust width for the third column */
+.results-table td:nth-child(3) {
+    width: 150px; /* Set width for the third column */
+}
+
+/* Optional: Adjust the width for the last column if needed */
+.results-table th:last-child,
+.results-table td:last-child {
+    width: 150px; /* Adjust width for the last column */
+}
 
