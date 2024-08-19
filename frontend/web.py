@@ -20,13 +20,18 @@ solver_mapping = {
 }
 
 # Home route to choose the number of students and courses
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
+    return render_template('index.html')
+
+
+@app.route('/demo', methods=['GET', 'POST'])
+def demo():
     if request.method == 'POST':
         num_students = int(request.form['num_students'])
         num_courses = int(request.form['num_courses'])
         return redirect(url_for('input_details', num_students=num_students, num_courses=num_courses))
-    return render_template('index.html')
+    return render_template('demo.html')
 
 
 # Route to input student and course details
@@ -35,7 +40,6 @@ def input_details(num_students, num_courses):
     if request.method == 'POST':
         students = []
         courses = []
-
 
         # Extract student details
         for i in range(num_students):

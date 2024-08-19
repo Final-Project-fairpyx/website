@@ -3,20 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fair Allocation - Home</title>
+    <title>Fair Allocation - Info</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <script>
-        function randomizeNumbers() {
-            // Generate a random number of students between 1 and 10
-            var numStudents = Math.floor(Math.random() * 10) + 1;
-            // Generate a random number of courses between 1 and 10
-            var numCourses = Math.floor(Math.random() * 10) + 1;
-
-            // Set the values to the respective input fields
-            document.getElementById('num_students').value = numStudents;
-            document.getElementById('num_courses').value = numCourses;
-        }
-    </script>
 </head>
 <body>
     <header>
@@ -24,16 +12,31 @@
         <h1>Fair Allocation Demo</h1>
     </header>
     <main>
-        <form action="/" method="post">
-            <label for="num_students">Number of students:</label>
-            <input type="number" id="num_students" name="num_students" min="1" required>
-            <br>
-            <label for="num_courses">Number of courses:</label>
-            <input type="number" id="num_courses" name="num_courses" min="1" required>
-            <br><br>
-            <button type="button" class="random-button" onclick="randomizeNumbers()">Randomize</button>
-            <button type="submit">Next</button>
-        </form>
+        <div class="form">
+        <section>
+            <h1>Course Allocation Problem</h1>
+            <h3>Problem Overview</h3>
+            <p>
+                In the course allocation problem, a university administrator seeks to efficiently and fairly allocate seats (or items) in over-demanded courses among students (or agents) with heterogeneous preferences.
+            </p>
+        </section>
+
+        <section>
+            <h3>Algorithms</h3>
+            <ul class="algorithms">
+                <li>Algorithm 1: Description of the first algorithm.</li>
+                <li>Algorithm 2: Description of the second algorithm.</li>
+                <li>Algorithm 3: Description of the third algorithm.</li>
+                <li>Algorithm 4: Description of the fourth algorithm.</li>
+                <li>Algorithm 5: Description of the fifth algorithm.</li>
+            </ul>
+        </section>
+
+        <!-- Container for the button -->
+        <div class="button-container">
+            <a href="{{ url_for('demo') }}" class="button">Try Demo</a>
+        </div>
+    </div>
     </main>
     <footer>
         <p>Contributed by

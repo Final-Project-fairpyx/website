@@ -127,6 +127,33 @@ button {
     cursor: pointer;
 }
 
+/* Ensure the button looks consistent with others */
+.button {
+    background-color: #87ceeb;
+    color: #fff;
+    border: none;
+    padding: 15px 30px; /* Increase padding for larger button */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px; /* Increase font size */
+    margin: 20px auto; /* Center button with margin */
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.button:hover {
+    background-color: #004f6e; /* Darker blue for hover effect */
+}
+
+/* Center the button in its container */
+.button-container {
+    text-align: center; /* Center text within container */
+    margin-top: 20px; /* Space above the container */
+}
+
+
 button:hover {
     background-color: #4682b4; /* Slightly darker blue */
 }

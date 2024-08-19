@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Allocation - Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function randomizeNumbers() {
+            // Generate a random number of students between 1 and 10
+            var numStudents = Math.floor(Math.random() * 10) + 1;
+            // Generate a random number of courses between 1 and 10
+            var numCourses = Math.floor(Math.random() * 10) + 1;
+
+            // Set the values to the respective input fields
+            document.getElementById('num_students').value = numStudents;
+            document.getElementById('num_courses').value = numCourses;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <a href="/" class="home-icon">🏠</a>
+        <h1>Fair Allocation Demo</h1>
+    </header>
+    <main>
+        <form action="/demo" method="post">
+            <label for="num_students">Number of students:</label>
+            <input type="number" id="num_students" name="num_students" min="1" required>
+            <br>
+            <label for="num_courses">Number of courses:</label>
+            <input type="number" id="num_courses" name="num_courses" min="1" required>
+            <br><br>
+            <button type="button" class="random-button" onclick="randomizeNumbers()">Randomize</button>
+            <button type="submit">Next</button>
+        </form>
+    </main>
+    <footer>
+        <p>Contributed by
+            <a href="https://github.com/MoriyaEster" target="_blank">Moriya Ester Ohayon</a>,
+            <a href="https://github.com/TamarBarIlan" target="_blank">Tammar Bar-Ilan</a> &
+            <a href="https://github.com/ofekats" target="_blank">Ofek Kats</a>
+        <br> &copy; 2024. All rights reserved.</p>
+    </footer>
+</body>
+</html>
