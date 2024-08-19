@@ -50,6 +50,10 @@ footer {
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow to make it stand out */
 }
 
+a {
+    color: white;
+}
+
 .bids-table th, .bids-table td,
 .select-course-conflicts table th, .select-course-conflicts table td {
     z-index: 1; /* Ensure table elements stay below the footer */
