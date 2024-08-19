@@ -1,10 +1,12 @@
 import json
 import logging
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import fairpyx
 import os
 from fairpyx.explanations import StringsExplanationLogger
 import cvxpy as cp
+import mosek
+
 
 global call_algo
 
@@ -256,6 +258,20 @@ def bids():
 @app.route('/result', methods=['GET', 'POST'])
 def results():
     return render_template('result.html')
+
+@app.route('/check_license', methods=['GET'])
+def check_license():
+    try:
+        # Initialize the MOSEK environment
+        with mosek.Env() as env:
+            # Check if MOSEK license is valid
+            is_licensed = True
+            app.logger.debug("has MOSEK license")
+    except Exception as e:
+        app.logger.error(f"Error checking MOSEK license: {e}")
+        is_licensed = False
+
+    return jsonify({'licensed': is_licensed})
 
 
 if __name__ == '__main__':

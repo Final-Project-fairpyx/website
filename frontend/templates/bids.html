@@ -276,6 +276,38 @@
         document.querySelector('form').addEventListener('submit', function() {
         document.getElementById('loading').style.display = 'block';
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const solverSelect = document.querySelector('select[name="cp_solver"]');
+        const submitButton = document.querySelector('button[type="submit"]');
+
+        solverSelect.addEventListener('change', function() {
+    const selectedSolver = solverSelect.value;
+
+    if (selectedSolver === 'cp.MOSEK' || selectedSolver === 'cp.SCIPY') {
+        fetch('/check_license')
+            .then(response => response.json())
+            .then(data => {
+                if (data.licensed) {
+                    // Enable submit button or provide feedback
+                    submitButton.disabled = false;
+                } else {
+                    // Disable submit button and provide feedback
+                    submitButton.disabled = true;
+                    alert('License is invalid. Please check your license.');
+                }
+            })
+            .catch(error => {
+                console.error('Error checking license:', error);
+                alert('An error occurred while checking the license.');
+            });
+    } else {
+        // If the selected solver is not in the list, enable the submit button
+        submitButton.disabled = false;
+    }
+});
+
+    });
     </script>
 </body>
 </html>
