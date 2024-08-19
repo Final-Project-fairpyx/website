@@ -42,7 +42,8 @@ footer {
     padding: 15px;
     background-color: #87ceeb; /* Light sky blue footer */
     color: #fff;
-    position: fixed;
+    /*position: fixed;*/
+    position: relative;
     bottom: 0;
     width: 100%;
     font-size: 14px;
@@ -50,8 +51,18 @@ footer {
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow to make it stand out */
 }
 
+footer a:hover {
+    color: #ddd; /* Lighter shade for hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+
 a {
     color: white;
+}
+
+.link {
+    color: #00008B;
 }
 
 .bids-table th, .bids-table td,
@@ -75,6 +86,7 @@ h1 {
 
 form {
     max-width: 1500px;
+    min-height: 250px;
     margin: 40px auto;
     padding: 20px;
     border-radius: 10px;
@@ -533,3 +545,65 @@ button:hover {
     color: #3498db;
     margin-top: 10px;
 }
+
+/* Style for the algorithm list */
+
+.main-background {
+    max-width: 1300px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    /*background-color: #f7f9fb;*/
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.overview, .algorithms-section, .reference-section {
+    margin-bottom: 30px;
+}
+
+h1, h3 {
+    color: #004f6e;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.algorithm-name {
+    font-weight: bold;
+    color: #007c9a;
+    font-size: 18px;
+}
+
+.algorithm-description {
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.algorithms li {
+    margin-bottom: 10px;
+}
+
+.reference-section p {
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.link {
+    color: #007c9a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+

@@ -12,26 +12,60 @@
         <h1>Fair Allocation Demo</h1>
     </header>
     <main>
-        <div class="form">
-        <section>
-            <h1>Course Allocation Problem</h1>
-            <h3>Problem Overview</h3>
-            <p>
-                In the course allocation problem, a university administrator seeks to efficiently and fairly allocate seats (or items) in over-demanded courses among students (or agents) with heterogeneous preferences.
-            </p>
-        </section>
+        <div class="main-background">
+            <section class="overview">
+                <h1>Course Allocation Problem</h1>
+                <h3>Problem Overview</h3>
+                <p class="algorithm-description">
+                    In the course allocation problem, a university administrator seeks to efficiently and fairly allocate seats (or items) in over-demanded courses among students (or agents) with heterogeneous preferences.
+                </p>
+            </section>
 
-        <section>
-            <h3>Algorithms</h3>
-            <ul class="algorithms">
-                <li>Algorithm 1: Description of the first algorithm.</li>
-                <li>Algorithm 2: Description of the second algorithm.</li>
-                <li>Algorithm 3: Description of the third algorithm.</li>
-                <li>Algorithm 4: Description of the fourth algorithm.</li>
-                <li>Algorithm 5: Description of the fifth algorithm.</li>
-            </ul>
-        </section>
+            <section class="algorithms-section">
+                <h3>Algorithms</h3>
+                <h4>From the Fairpyx Library</h4>
+                <ul class="algorithms">
+                    <li>
+                        <span class="algorithm-name">TTC (Top Trading-Cycle):</span>
+                        <span class="algorithm-description">
+                            Assigns one course in each round to each student, the winning students are defined based on the students’ bid values.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="algorithm-name">SP (Second Price):</span>
+                        <span class="algorithm-description">
+                            In each round distributes one course to each student, with the refund of the bids according to the price of the course.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="algorithm-name">TTC-O:</span>
+                        <span class="algorithm-description">
+                            Assigns one course in each round to each student, the winning students are defined based on the students’ bid values. Uses linear planning for optimality.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="algorithm-name">SP-O:</span>
+                        <span class="algorithm-description">
+                            In each round distributes one course to each student, with the refund of the bids according to the price of the course. Uses linear planning for optimality.
+                        </span>
+                    </li>
+                    <li>
+                        <span class="algorithm-name">OC:</span>
+                        <span class="algorithm-description">
+                            In the OC algorithm for CAP, we maximize ordinal utility followed by maximizing cardinal utility among rank-maximal solutions, performing this two-part optimization once for the whole market.
+                        </span>
+                    </li>
+                </ul>
+            </section>
 
+            <section class="reference-section">
+                <p>
+                    Based on: "Optimization-based Mechanisms for the Course Allocation Problem", by Hoda Atef Yekta, Robert Day (2020)
+                    <a href="https://doi.org/10.1287/ijoc.2018.0849" target="_blank" class="link">To Read the Paper</a>
+                </p>
+                <br>
+                <a href="https://github.com/Final-Project-fairpyx/fairpyx" target="_blank" class="link">To The GitHub Code</a>
+            </section>
         <!-- Container for the button -->
         <div class="button-container">
             <a href="{{ url_for('demo') }}" class="button">Try Demo</a>
