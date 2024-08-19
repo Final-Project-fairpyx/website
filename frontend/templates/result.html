@@ -163,14 +163,21 @@
                     </tr>
                     <div id="popup-{{ student }}" class="popup">
                         <div class="popup-content">
-                            <span class="close-btn" onclick="closePopup('{{ student }}')">&times;</span>
                             <h2>Details for {{ student }}</h2>
                             <p><pre>{{ info['details'] }}</pre></p>
+                            <div class="popup-footer">
+                                <button class="close-btn" onclick="closePopup('{{ student }}')">Close</button>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <!-- Button to try another demo -->
+        <div class="try-another-demo">
+            <a href="{{ url_for('index') }}" class="button">Try Another Demo</a>
         </div>
         </div>
     </main>

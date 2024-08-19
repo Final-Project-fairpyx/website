@@ -336,24 +336,57 @@ button:hover {
     overflow: auto; /* Scroll within popup if needed */
     position: relative;
     font-size: 16px;
+    display: flex;
+    flex-direction: column; /* Allow footer to be pushed to bottom */
 }
 
-/* Close Button */
-.close-btn {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
+/* Footer inside the popup */
+.popup-footer {
+    margin-top: auto; /* Push footer to the bottom */
+    width: calc(100% - 20px); /* Full width minus padding */
+    text-align: center;
+    padding: 10px 0; /* Optional: Adjust padding for better spacing */
 }
 
-.close-btn:hover,
-.close-btn:focus {
-    color: black;
-    text-decoration: none;
+/* Style for the close button in the popup */
+.popup-content .close-btn {
+    background-color: #007c9a;
+    color: #fff;
+    border: none;
+    padding: 10px;
     cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
 }
+
+.popup-content .close-btn:hover {
+    background-color: #004f6e;
+}
+
+/* Style for the 'Try Another Demo' button */
+.try-another-demo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.try-another-demo .button {
+    background-color: #007c9a;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.try-another-demo .button:hover {
+    background-color: #004f6e;
+}
+
 
 /* Container for scrollable table */
 .bids-table-container {
