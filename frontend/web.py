@@ -5,7 +5,6 @@ import fairpyx
 import os
 from fairpyx.explanations import StringsExplanationLogger
 import cvxpy as cp
-import mosek
 
 
 global call_algo
@@ -15,7 +14,6 @@ app.secret_key = os.urandom(24)  # Set a secret key for session management
 
 solver_mapping = {
     'cp.CBC': cp.CBC,
-    'cp.MOSEK': cp.MOSEK,
     'cp.SCIP': cp.SCIP,
     'cp.GLPK_MI': cp.GLPK_MI,
     'cp.SCIPY': cp.SCIPY,
@@ -175,12 +173,8 @@ def bids():
                 app.logger.debug(solver)
                 string_explanation_logger = StringsExplanationLogger([student['name'] for student in students],
                                                                      level=logging.INFO)
-                if solver == 'cp.MOSEK':
-                    results = fairpyx.divide(call_algo, instance=instance, explanation_logger=string_explanation_logger,
-                                             solver=cp.CBC)
-                    solver = 'cp.CBC'
-                else:
-                    results = fairpyx.divide(call_algo, instance=instance, explanation_logger=string_explanation_logger, solver=None)
+
+                results = fairpyx.divide(call_algo, instance=instance, explanation_logger=string_explanation_logger, solver=None)
 
             except Exception as e:
                 app.logger.error(f"An unexpected error occurred: {e}")
@@ -258,20 +252,6 @@ def bids():
 @app.route('/result', methods=['GET', 'POST'])
 def results():
     return render_template('result.html')
-
-@app.route('/check_license', methods=['GET'])
-def check_license():
-    try:
-        # Initialize the MOSEK environment
-        with mosek.Env() as env:
-            # Check if MOSEK license is valid
-            is_licensed = True
-            app.logger.debug("has MOSEK license")
-    except Exception as e:
-        app.logger.error(f"Error checking MOSEK license: {e}")
-        is_licensed = False
-
-    return jsonify({'licensed': is_licensed})
 
 
 if __name__ == '__main__':
